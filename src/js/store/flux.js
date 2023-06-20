@@ -53,7 +53,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch(error) {
 					console.log(error)
 				}
-			}
+			},
+			updateContacts:
+				async function (data, id) {
+					let store = getStore()
+					try {
+						const response = await fetch(`${store.baseURL}/${id}`,{
+							method: "PUT", headers:{
+								"Content-Type": "application/json"
+							},
+							body:JSON.stringify(data)
+						})
+						if(response.ok){
+							getActions().getContacts();
+						}
+					} catch(error) {
+						console.log(error)
+					}
+				}
 		}
 	};
 };

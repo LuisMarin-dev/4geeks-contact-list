@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-
 import "../../styles/demo.css";
 
 const initialValues = {
@@ -16,12 +14,19 @@ const initialValues = {
  const NewContact = () => {
 	const { store, actions } = useContext(Context);
 	const [contact, setContact] = useState(initialValues);
+	const {id} = useParams();
+	console.log(id);
 	const handleContact = (event) => {
 		setContact({...contact,[event.target.name]:event.target.value})
 	};
 	const addNewContact = (event) =>{
 		event.preventDefault();
-		actions.addContacts(contact);
+		if(id == undefined ){
+			actions.addContacts(contact);
+
+		} else{
+			actions.updateContacts(contact, id)
+		}
 	}
 
 	return (
@@ -45,6 +50,7 @@ const initialValues = {
 			</div>
 			<button type="submit" className="btn btn-primary col-6">Save</button>
 			</form>
+			<Link to="/">or get back to contacts</Link>
 		</div>
 	);
 };
